@@ -8,6 +8,17 @@ let courses = [
 ];
 
 app.use(express.json());
+function middleware(req, res, next) {
+    let ip = req.ip;
+    let date = new Date();
+    let host = req.hostname;
+    let method = req.method;
+    console.log(`ip: ${ip} , date: ${date} , host: ${host} , method: ${method}`);
+    next();
+}
+
+app.use(middleware);
+
 
 app.get('/courses', (req, res) => {
     res.json(courses);
@@ -21,10 +32,7 @@ app.post('/courses', (req, res) => {
     res.status(201).json(course);
 });
 
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`);
-// });
+
 
 app.listen(3000, () => {
     console.log("server started");
